@@ -16,6 +16,28 @@ class wpCSL_settings {
                              'auto' => false
                              ));
 
+    $this->csl_php_modules = get_loaded_extensions();
+    natcasesort(&$this->csl_php_modules);
+    global $wpdb;
+    $this->add_section(array(
+                             'name' => 'Plugin Environment',
+                             'description' => '<p>
+                                                 Here are the technical details about your plugin:<br />
+                                                 <div style="border: solid 1px #E0E0E0; padding: 6px; margin: 6px; background-color: #F4F4F4;">                                                 
+                                                     <div style="clear:left;"><div style="width:150px; float:left; text-align: right; padding-right: 6px;">Active WPCSL:</div><div style="float: left;">'       . plugin_dir_path(__FILE__)  .'</div></div>
+                                                     <div style="clear:left;"><div style="width:150px; float:left; text-align: right; padding-right: 6px;">WPCSL Version:</div><div style="float: left;">'       . WPCSL_GENERIC_VERSION  .'</div></div>
+                                                     <div style="clear:left;"><div style="width:150px; float:left; text-align: right; padding-right: 6px;">WordPress Version:</div><div style="float: left;">'  . $GLOBALS['wp_version']     .'</div></div>
+                                                     <div style="clear:left;"><div style="width:150px; float:left; text-align: right; padding-right: 6px;">MySQL Version:</div><div style="float: left;">'      .  $wpdb->db_version()       .'</div></div>
+                                                     <div style="clear:left;"><div style="width:150px; float:left; text-align: right; padding-right: 6px;">PHP Version:</div><div style="float: left;">'        . phpversion()               .'</div></div>
+                                                     <div style="clear:left;"><div style="width:150px; float:left; text-align: right; padding-right: 6px;">PHP Modules:</div><div style="float: left;">'        . implode('<br/>',$this->csl_php_modules) . '</div></div>
+                                                     <div style="clear:left;">&nbsp;</div>
+                                                 </div>
+                                               </p>
+                                               ',
+                             'auto' => false
+                             ));
+
+
     $this->add_section(array(
                              'name' => 'Plugin Info',
                              'description' => '<img src="'. $this->plugin_url .'/images/CSL_Logo_Only.jpg" style="float: left; padding: 5px;"/>
@@ -97,7 +119,7 @@ class wpCSL_settings {
 
     $this->sections['Plugin License']->header();
 
-    $this->show_product_settings();
+    $this->show_plugin_settings();
 
     $this->sections['Plugin License']->footer();
 
@@ -107,6 +129,8 @@ class wpCSL_settings {
       }
     }
 
+    $this->sections['Plugin Environment']->display();
+    
     $this->sections['Plugin Info']->display();
 
     $this->render_javascript();
@@ -118,7 +142,7 @@ class wpCSL_settings {
   /* This is a function specifically for showing the licensing stuff,
    * should probably be moved over to the licensing submodule
    */
-  function show_product_settings() {
+  function show_plugin_settings() {
 
     $content = "<tr valign=\"top\">\n";
     $content .= "  <th scope=\"row\">License Key *</th>";

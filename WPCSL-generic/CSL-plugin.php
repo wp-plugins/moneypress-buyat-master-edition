@@ -1,4 +1,6 @@
 <?php
+define('WPCSL_GENERIC_VERSION', '1.2');
+
 require_once('CSL-settings_class.php');
 require_once('CSL-notifications_class.php');
 require_once('CSL-license_class.php');
@@ -134,7 +136,6 @@ class wpCSL_plugin {
     }
   }
 
-
   function create_options_page() {
     add_options_page($this->name . ' Options', $this->name, 'administrator', $this->prefix . '-options', array($this->settings, 'render_settings_page'));
   }
@@ -195,6 +196,14 @@ class wpCSL_plugin {
     $this->add_wp_actions();
   }
 
+  /**
+   * ADD_WP_ACTIONS()
+   *
+   * What we do when WordPress is initializing actions
+   *
+   * Note: admin_menu is not called on every admin page load
+   * Reference: http://codex.wordpress.org/Plugin_API/Action_Reference
+   */
   function add_wp_actions() {
     if ( is_admin() ) {
       add_action('admin_menu', array($this, 'create_options_page'));
@@ -227,6 +236,13 @@ class wpCSL_plugin {
     }
   }
 
+  /**
+   * ADMIN_INIT()
+   *
+   * What we do whenever an admin page is initialized. 
+   * This is called by Wordpress.
+   * 
+   */
   function admin_init() {
     $this->add_display_settings();
     $this->settings->register();
@@ -354,9 +370,16 @@ class wpCSL_plugin {
   function shortcode_show_items($atts, $content = NULL) {
           global $current_user;
           get_currentuserinfo();
-
+          
           if ( ($current_user->wp_capabilities['administrator']) || ($current_user->user_level == '10') || get_option($this->prefix.'-purchased')) {
 
+//echo "<b>Starting...</b><br/>";                  
+//echo "my new attributes..<br/>";
+//var_dump($atts); 
+//echo "Driver settings...<br/>";
+//$fsov_start = $this->driver->fetch_supported_option_values();
+//var_dump($fsov_start);
+              
                   // Filter out erroneous attributes
                   if (is_array($atts)) {
                           $atts = array_intersect_key( $atts, $this->csl_array_fill_keys( $this->driver->get_supported_options(), 'temp' ) );
@@ -375,12 +398,12 @@ class wpCSL_plugin {
                                   }
                           }
                   }
-
+                  
                   // Send them to the driver (if they exist)
                   if (isset($defaults)) {
                           $this->driver->set_default_option_values($defaults);
                   }
-
+                  
                   if (isset($this->cache) && get_option($this->prefix.'-cache_enable')) {
                           if (!($products = $this->cache->load(md5(implode(',',$atts)))) ) {
                                   $products = $this->driver->get_products($atts);
@@ -405,8 +428,11 @@ class wpCSL_plugin {
 
                   // If there are products, display them
                   if (count($products) > 0) {
-                          return $this->display_products($products);
-                  } else return "No products found";
+                         $content = $this->display_products($products);
+                          
+                  } else $content="No products found";
+                  
+                  return $content;
           }
   }
 
