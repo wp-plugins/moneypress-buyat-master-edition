@@ -30,7 +30,7 @@ if (class_exists('BuyatDriver') === false) {
         //
         private $keywords       = array();      // List of keywords to fetch
         private $page_number    = 1;            // Which page number to fetch
-        private $programme_id;                  // The vendor ID (665 = Ticketmaster, 1386 = Fathead, 1388 = Ghirardelli)
+        private $programme_id   = null;         // The vendor ID (665 = Ticketmaster, 1386 = Fathead, 1388 = Ghirardelli)
         private $return         = 10;           // Products we return. can be changed by set_maximum_product_count()
         private $sort_order     = 'asc';        // Default sort order
         private $sort_type      = 'relevance';  // Default sort type
@@ -42,6 +42,7 @@ if (class_exists('BuyatDriver') === false) {
          * creation by the head-end program.
          */
         private $supported_options = array(
+            'api_key',
             'keywords',
             'page_number',
             'programme_id',            
@@ -59,10 +60,24 @@ if (class_exists('BuyatDriver') === false) {
          * We have to pass in the API Key as we need
          * this to fetch product information.
          */
-        public function __construct($api_key, $programme_id = null) {
-            $this->api_key = $api_key;
-            if (isset($programme_id)) { $this->programme_id = $programme_id; }
-            $this->api_client = new BuyatAPIClient($api_key);
+        public function __construct($options) {
+            
+            // Make sure we create all of these member variables so as to
+            // prevent php warnings on reference
+            foreach ($this->supported_options as $name) {
+                if (!isset($this->$name)) { $this->$name = null; }
+            }                      
+            
+            // Set the properties of this object based on
+            // the named array we got in on the constructor
+            //
+            foreach ($options as $name => $value) {
+                $this->$name = $value;
+            }            
+            
+            // Setup the client driver at BuyAt
+            //
+            $this->api_client = new BuyatAPIClient($this->api_key,$this->debugging);
         }
     
         //// INTERFACE METHODS /////////////////////////////////////
@@ -72,7 +87,7 @@ if (class_exists('BuyatDriver') === false) {
          * Panhandler required method.
          */
         public function get_products($options = null) {
-                        
+            
             // Check the incoming options to ensure they are supported
             // by this interface.
             //
@@ -83,39 +98,21 @@ if (class_exists('BuyatDriver') === false) {
                     }
                 }    
             }
-            
-            // Set any options that are defaults in this interface
-            // but were not passed in.
-            foreach ($this->supported_options as $name) {
-                if (!isset($options[$name]) && isset($this->$name)) {
-                    $options[$name] = $this->$name;
-                }
-            }    
-            
-            // Properly encode the keywords
+
+            // Set our object properties to match the override that
+            // came in via a shortcode if it is provided
             //
-            if (isset($options['keywords'])) {
-                if (! is_array($options['keywords'])) {
-                    $options['keywords'] = array($options['keywords']);
-                }
-                $options['keywords'] = urlencode(implode(' ', $options['keywords']));
-            }
-            
-            // Force Programme ID if set in constructor
-            //
-            if (isset($this->programme_id)) { $options['programme_id'] = $this->programme_id;}
-                       
+            $this->parse_options($options);
             return $this->extract_products(
                 $this->api_client->searchProducts(
-                    array($options['keywords']),
-                    $options['page_number'],
-                    $options['return'],
-                    $options['sort_type'],
-                    $options['sort_order'],
-                    $options['programme_id']
+                        $this->keywords,
+                        $this->page_number,
+                        $this->return,
+                        $this->sort_type,
+                        $this->sort_order,
+                        $this->programme_id
                     )
-                );
-
+                );             
         }
         
         /**
@@ -195,6 +192,29 @@ if (class_exists('BuyatDriver') === false) {
         
         //// PRIVATE METHODS ///////////////////////////////////////
         
+        /**
+         * Called by the interface methods which take an $options hash.
+         * This method sets the appropriate private members of the object
+         * based on the contents of hash.  It looks for the keys in
+         * $supported_options and assigns the value to the private members
+         * with the same names.  See the documentation for each of those
+         * members for a description of their acceptable values, which
+         * this method does not try to enforce.
+         *
+         * Returns no value.
+         */
+        private function parse_options($options) {
+            foreach ($this->supported_options as $name) {
+                if (isset($options[$name])) {
+                    $this->$name = $options[$name];
+                }
+            }
+        
+            if (is_array($this->keywords) === false) {
+                $this->keywords = preg_split('/[\s,]+/', $this->keywords);
+            }
+        }        
+        
     
         /**
          * Takes a BuyAt Product object representing an <item> node in search
@@ -217,9 +237,10 @@ if (class_exists('BuyatDriver') === false) {
          */
         private function extract_products($buyatproducts) {
             $products = array();
-            
-            foreach ($buyatproducts['products'] as $item) {
-                $products[] = $this->convert_item($item);
+            if (isset($buyatproducts['products'])) {
+                foreach ($buyatproducts['products'] as $item) {
+                    $products[] = $this->convert_item($item);
+                }
             }
     
             return $products;
@@ -229,4 +250,3 @@ if (class_exists('BuyatDriver') === false) {
 
 }
 
-?>
