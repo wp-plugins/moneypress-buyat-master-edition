@@ -103,9 +103,9 @@ if (class_exists('BuyatDriver') === false) {
             
             // Force Programme ID if set in constructor
             //
-            if (isset($this->programme_id)) { $options['programme_id'] = $this->programme_id;}
-                       
-            return $this->extract_products(
+            if (isset($this->programme_id)) {
+             $options['programme_id'] = $this->programme_id;
+             return $this->extract_products(
                 $this->api_client->searchProducts(
                     array($options['keywords']),
                     $options['page_number'],
@@ -114,8 +114,17 @@ if (class_exists('BuyatDriver') === false) {
                     $options['sort_order'],
                     $options['programme_id']
                     )
-                );
-
+                );             
+            }
+			//If the account isn't valid, programme_id is non-existant
+			//and will run this part..
+			else {
+                        print('<pre>');
+                        print('Notice:<br />');
+                        print('There\'s a possible error with your BuyAT account.<br />');
+                        print('Please check it to make sure it is active and functioning.');
+                        print('</pre>');
+                };
         }
         
         /**
