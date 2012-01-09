@@ -3,47 +3,104 @@ Plugin Name: MoneyPress : BuyAt Master Edition
 Contributors: cybersprocket
 Donate link: http://www.cybersprocket.com/products/moneypress-buyat-edition/
 Tags: plugin,post,page,affiliate,store,products,ecommerce,revenue sharing,storefront,buyat
-Requires at least: 2.6
-Tested up to: 3.0
-Stable tag: 1.01
+Requires at least: 3.1
+Tested up to: 3.3.1
+Stable tag: 1.1
 
-MoneyPress : BuyAt Master Edition allows you to quickly and easily display products from BuyAt vendors on any page or post via a simple shortcode. 
+This plugin allows you to display BuyAt listings on your web site by placing a simple shortcode in your page or post. Filter results by keyword, seller ID, or a combination of both. 
 
 == Description ==
 
-MoneyPress : BuyAt Master Edition allows you to quickly and easily display products from any BuyAt vendor that provides a product feed on any page or post via a simple shortcode.  Install the plugin and you can add products to your existing blog posts or pages just be entering a shortcode. Multiple configuration options allow you to customize the display.  If you are a BuyAt reseller, this plugin is for you!
+Our MoneyPress : BuyAt Edition plugin allows you to easily display products from BuyAt based on keywords you provide. It makes it simple to show product listings for anything relevant to your site. All product entries also come with images, current asking prices, and links to BuyAt to get further information about the product.
 
-Requires PHP5.0 or higher.
+Sell any product on BuyAt and earn a commission with your BuyAt Partner ID or other approved affiliate program ID. If you are an approved BuyAt affiliate this plugin will help boost the income earning potential of your site in just a few easy steps.
 
-= Features: = 
+After installing the plugin (see below for instructions) you can show products on any page on your site by using the ‘[ebay_show_items]’ shortcode.  For example, entering the shortcode
+
+    [mp_buyat keywords="wordpress books"]
+
+would populate your site with a listing of products matching those keywords.  You can put any keywords you like into the shortcode, to best suit your website.
+
+= Features = 
 
 * Uses your own API key.
 * No revenue sharing, you keep 100% of your sales.
 
-= Related Links: =
 
-* <a href="http://redmine.cybersprocket.com/projects/moneypress-buyat/wiki" title="MoneyPress : BuyAt Master Edition Knowledgebase">MoneyPress : BuyAt Master Edition Knowledgebase</a>
-* <a href="http://redmine.cybersprocket.com/projects/moneypress-buyat/boards" title="MoneyPress : BuyAt Master Edition Forums">MoneyPress : BuyAt Master Edition Forums</a> 
+= Add On Packages Now Available =
 
-= Notice: =
+Our Light Edition (LE) and standard edition products are no longer separate.   
+You can now add the features of the full edition product without uninstalling the
+light edition version.  Option packs are now available directly from within the plugin
+itself making it easier for users to activate and utilize the extended feature set.
 
-Special Notice For Users of Other MoneyPress Plugins:
+The base feature set no longer runs in a demo/admin-only mode.   All basic features
+are fully functional and unrestricted.
 
-If you are using other MoneyPress plugins you may need to upgrade those plugins to the latest release version when you install this product.  All of the MoneyPress plugins use a common program library.  That helps us improve quality and add features across the entire product line with minimal effort, helping keep our prices low.
+= Plus Pack (Premium Add-On) =
 
-If you install a new MoneyPress plugin on your site you should upgrade all plugins in the MoneyPress series to the latest version.
+The following features are now available in the Plus Pack:
+
+* CSS Theme System - several simple pre-defined themes are available.  Easily add your own to make listings look exactly right for your site.
+
+For more information on Plus Pack features, visit the [MoneyPress : BuyAt Edition](http://www.cybersprocket.com/products/moneypress-buyat-edition/)  page.
+
+= More Frequent Patches =
+
+The base plugin is fully functional with no restrictions and now has the latest
+bug fixes and patches as soon as they are available.  In prior releases the light
+edition product was 3-6 months behind the plus edition for bug fixes and patches.
+
+= Need Special Features? =
+
+Cyber Sprocket can provide modifications to the plugin to make it the perfect solution for your site.  
+We charge $60/hour to create custom additions that we roll into the next product release. 
+You get exactly the plugin you want and will have the benefit of having a mainstream product release.
+You get the benefit of getting our future upgrades without having to re-apply your patches.
+
+Learn more at: http://www.cybersprocket.com/
+
+
+= Related Links =
+
+* [MoneyPress : BuyAt Edition](http://www.cybersprocket.com/products/moneypress-buyat-edition/) 
+* [Other Cyber Sprocket Plugins](http://wordpress.org/extend/plugins/profile/cybersprocket/) 
+* [Our Facebook Page](http://www.facebook.com/cyber.sprocket.labs)
+* [Demo Site - see it in action](http://www.remodelcharleston.com)
 
 == Installation ==
 
-* Get the ZIP file from Cyber Sprocket
-* Get your API key from the BuyAt developer site.
-* Install the plugin using the zip file.
-* Go to MoneyPress : BuyAt in the Wordpress Settings menu.
-* Enter your BuyAt Developer API key.
+= Requirements =
 
-== Upgrade Notice ==
+PHP 5.2 or later with support for cURL and SimpleXML.
 
-*Note:* When you upgrade this plugin, you will need to update any other MoneyPress plugins you may have installed if there is a plugin update available.
+= Main Plugin =
+
+ * Install the plugin using the Zip file.
+ * Browse to ‘MoneyPress : BuyAt Edition’ in your admin settings menu.
+ * Enter the ‘[mp_buyat keywords=”…” category_id=""]’ on any page you want to list products.
+ 
+= Plus Pack =
+
+The Plus Pack requires the purchase of a license.  When you purchase the Plus Pack you will receive an email with a license key.
+Enter the license key in the field provided.   The Plus Pack will be automatically installed and activated once a valid license
+has been entered.
+
+== Frequently Asked Questions ==
+
+= Where can I find support for this plugin? =
+
+See the knowledgebase at http://redmine.cybersprocket.com/projects/moneypress-buyat/wiki
+
+All support inquiries should be posted at the forum section of the knowledgebase.
+
+= How can i translate the plugin into my language? =
+
+* Find on internet the free program POEDIT, and learn how it works.
+* Use the .pot file located in the languages directory of this plugin to create or update the .po and .mo files.
+* Place these file in the languages subdirectory.
+* If everything is ok, email the files to lobbyjones@cybersprocket.com and we will add them to the next release.
+* For more information on POT files, domains, gettext and i18n have a look at the I18n for WordPress developers Codex page and more specifically at the section about themes and plugins.
 
 == Screenshots ==
 
@@ -52,33 +109,14 @@ If you install a new MoneyPress plugin on your site you should upgrade all plugi
 3. The MoneyPress : BuyAt settings page.
 4. The system information section of the settings page.
 
-== Frequently Asked Questions ==
-
-= What percentage of my sales does Cyber Sprocket keep? =
-
-None.  Everything you earn through this plugin is yours, we don't siphon off any of your sales or earn anything outside of our one-time $20 license fee.
-
-= What are the other MoneyPress plugins? =
-
-We offer the following MoneyPress plugins that all work to show listings from various eCommerce sites in your WordPress site via a few simple shortcodes:
-
-* BuyAt Master Edition
-* BuyAt NY Times Store Edition
-* CafePress Edition
-* Commission Junction Edition
-* eBay Edition
-
-Look for more editions coming soon!
-
-= More Info... =
-
-To learn more, visit our <a href="http://redmine.cybersprocket.com/projects/moneypress-buyat/wiki" title="MoneyPress : BuyAt Master Edition Knowledgebase">knowledgebase</a> or visit our <a href="http://redmine.cybersprocket.com/projects/moneypress-buyat/boards">Community Forums</a>.
-
-== License ==
-
-We charge a nominal $20 fee to unlock this plugin which turns on the plugin content for your site visitors.  However you can download and test this plugin for FREE without entering a license code which allows anyone logged in as an administrator on your site to see the plugin content.  By charging this one-time fee we are able to provide ongoing support and maintance for the plugin.  Remember, you can still try this in admin mode at no charge.  If you purchase the plugin and decide you don't like it just let us know within 30 days and we'll refund your purchase with no questions asked.
-
 == Changelog ==
+
+= v1.1 (January 2012) = 
+
+* Base product is now fully functional, no restrictions.
+* Fixed product cache.
+* Updated with the class codes to prevent conflicts if other MoneyPress plugins are installed.
+* New PLUS PACK available, allows for custom non-destructive themes to stylize the output.
 
 = v1.01 (July 1st, 2010) = 
 
