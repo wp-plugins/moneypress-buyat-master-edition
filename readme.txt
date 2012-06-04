@@ -5,7 +5,7 @@ Donate link: http://www.cybersprocket.com/products/moneypress-buyat-edition/
 Tags: plugin,post,page,affiliate,store,products,ecommerce,revenue sharing,storefront,buyat
 Requires at least: 3.1
 Tested up to: 3.3.1
-Stable tag: 1.1.1
+Stable tag: 1.2
 
 This plugin allows you to display BuyAt listings on your web site by placing a simple shortcode in your page or post. Filter results by keyword, seller ID, or a combination of both. 
 
@@ -110,6 +110,10 @@ All support inquiries should be posted at the forum section of the knowledgebase
 4. The system information section of the settings page.
 
 == Changelog ==
+
+= v1.2 (June 4th, 2012) =
+
+* Performance Improvements
 
 = v1.1 (January 2012) = 
 

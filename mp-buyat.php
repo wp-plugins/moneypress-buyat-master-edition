@@ -4,7 +4,7 @@
   Plugin URI: http://www.cybersprocket.com/products/moneypress-buyat-edition/
   Description: MoneyPress BuyAt Master Edition allows you to quickly and easily display products from any BuyAt advertising partner on any page or post via a simple shortcode.
   Author: Cyber Sprocket Labs
-  Version: 1.1.1
+  Version: 1.2
   Author URI: http://www.cybersprocket.com/
   License: GPL3
 

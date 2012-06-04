@@ -77,16 +77,14 @@ class BuyatAPIClient
    * @param string $api_key Your API key (optional)
    */
 
-  public function __construct($api_key = null, $debugging = false)
+  public function __construct($api_key = null)
   {
     if(!is_null($api_key))
     {
       $this->m_api_key = $api_key;
     }
-    
-    $this->debugging = $debugging;
 
-    $this->m_api_core = new BuyatAPICore(null,null,$debugging);
+    $this->m_api_core = new BuyatAPICore();
   }
 
   /**
@@ -111,6 +109,7 @@ class BuyatAPIClient
   public function searchProducts($query = null, $page = 1, $perPage = 10,$sort ='relevance', $sortOrder = 'desc', $programmeIDs = null, $excludedProgrammeIds = null, $excludedProgrammeCategoryIds = null, $feedIds = null,$level1CategoryId = null, $level2CategoryId =  null, $includeAdult = 'n', $lid = null)
   {
     $args = array('page' => $page, 'perpage' => $perPage, 'sort' => $sort, 'sortorder' => $sortOrder, 'include_adult' => $includeAdult);
+    
     if(isset($query))
     {
       $args['query'] = urlencode(join(' ',$query));
@@ -150,40 +149,22 @@ class BuyatAPIClient
     {
       $args['lid'] = $lid;
     }
-     
+    
     $search_results =  $this->m_api_core->api_call('buyat.affiliate.product.search', $this->m_api_key, $args, $this->m_allow_error);
-    
-    if(is_array($search_results)) {
-        $products = array();
-        $products['current_results'] = $search_results['current_results'];
-        $products['total_results'] = $search_results['total_results'];
-        $products['start'] = $search_results['start'];
-        $products['limit'] = $search_results['limit'];
-        $products['query'] = $search_results['query'];
-       
-        foreach ($search_results['products'] as $product)
-        {
-          $products ['products'][] = $this->getProductObject($product['value']);
-        }
-    
-        return  $products;
-    } else {
-        if (preg_match('/^<h1>(\d+) ([^<]+)/',$search_results, $errMatches)) { // 
-            //print($search_results);
-            print '<pre>';
-             print 'There appears to be an error with your BuyAt account or settings.<br>';
-             print 'BuyAt has returned a code:<b> '.$errMatches[1].'</b><br>';
-             print 'With the following message (if any): <b>'.$errMatches[2].'</b>';
-            print '</pre>';
-        
-            return array();
-        } else {
-            print('<pre>Unexpected error from Buy At:<br />');
-            print_r($search_results);
-            print('</pre>');    
-            }
-            
-        }
+      
+    $products = array();
+    $products['current_results'] = $search_results['current_results'];
+    $products['total_results'] = $search_results['total_results'];
+    $products['start'] = $search_results['start'];
+    $products['limit'] = $search_results['limit'];
+    $products['query'] = $search_results['query'];
+   
+    foreach ($search_results['products'] as $product)
+    {
+      $products ['products'][] = $this->getProductObject($product['value']);
+    }
+
+    return  $products;
   }
 
 
@@ -835,7 +816,7 @@ class BuyatAPICore
    * @param string $api_path Path to the API endpoint (optional).
    */
 
-  public function __construct($api_host = null, $api_path = null, $debugging = false)
+  public function __construct($api_host = null, $api_path = null)
   {
     if(!is_null($api_host))
     {
@@ -845,7 +826,6 @@ class BuyatAPICore
     {
       $this->m_api_path = $api_path;
     }
-    $this->debugging = $debugging;
   }
 
   /**
@@ -865,19 +845,9 @@ class BuyatAPICore
       throw new BuyatException('Unable to contact API');
     }
     
-    if ($this->debugging) {
-        print '<pre>'.print_r($response,true).'</pre>';
-    }
-
-    // If we got a developer inactive error, let them know 
-    // and get the heck out of here
-    //
-    if (preg_match('/^<h1>(\d+) ([^<]+)/',$response)) {        
-        return $response;
-    }
 
     $response = unserialize($response);
-    
+
     if(!is_array($response))
     {
       throw new BuyatException('Invalid response from API');
